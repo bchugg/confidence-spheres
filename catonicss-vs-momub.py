@@ -1,0 +1,54 @@
+from scipy import sqrt, log, exp
+import matplotlib.pyplot as plt
+
+# radius of MoM confidence sphere
+# lugosi mendelson survey prop 1
+
+def momradius(n, alpha, trSigma):
+    return 4*sqrt(trSigma*(8*log(1/alpha)+1)/n)
+
+
+# radius of our Catoni-Giulini confidence sphere sequence
+def CGradius(t, alpha, trSigma, sumlambda, sumlambdasq, beta=1):
+    return (sqrt(trSigma)*(2*exp(2/beta + 2)+1)*sumlambdasq + beta/2 + log(1/alpha))/sumlambda
+
+
+
+from matplotlib import rc
+
+# Configure Matplotlib to use LaTeX
+rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
+rc('text', usetex=True)
+plt.rcParams.update({'font.size': 18})
+
+
+
+alpha = 0.05
+
+momradii = [ ]
+CGradii = [ ]
+
+sumlambda = sumlambdasq = 0
+
+d = 20
+end = 10000
+
+for t in range(1,end+1):
+    sumlambda += sqrt( log(1/alpha)/(sqrt(d)*t*log(t+10)*4) )
+    sumlambdasq += log(1/alpha)/(sqrt(d)*t*log(t+10)*4)
+    momradii.append(momradius(t, alpha/(t+t*t), d))
+    CGradii.append(CGradius(t, alpha, d, sumlambda, sumlambdasq, beta=4))
+
+start = 150
+
+plt.plot(range(start, end), momradii[start:], label='MoM CSph w/ union bound', c='blue', lw=2, ls='--')
+plt.plot(range(start, end), CGradii[start:], label='Our Catoni-Giulini CSphS', c='red', lw=2, ls='-')
+
+plt.legend(fontsize=16)
+# plt.xscale('log')
+plt.xlim()
+plt.ylabel('CSS Radius')
+plt.xlabel('Samples')
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.savefig('cgvsmom.png', dpi=300, bbox_inches='tight')
