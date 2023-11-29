@@ -42,15 +42,16 @@ for t in range(1,end+1):
 start = 150
 
 
-plt.figure(figsize=(5,2))
+# plt.figure(figsize=(5,2))
 plt.plot(range(start, end), momradii[start:], label='MoM', c='blue', lw=2, ls='--')
 plt.plot(range(start, end), CGradii[start:], label='Theorem 3', c='red', lw=2, ls='-')
 
-plt.legend(fontsize=12)
+plt.legend(fontsize=16)
 # plt.xscale('log')
 plt.xlim()
 plt.ylabel('CSS Radius')
 plt.xlabel('Samples')
 #plt.xticks(fontsize=8)
 #plt.yticks(fontsize=8)
-plt.savefig('cgvsmom.pdf', dpi=300, bbox_inches='tight')
+#plt.savefig('cgvsmom.pdf', dpi=300, bbox_inches='tight')
+plt.savefig('cgvsmom.png', dpi=300, bbox_inches='tight')
