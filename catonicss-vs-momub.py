@@ -11,6 +11,7 @@ def momradius(n, alpha, trSigma):
 # radius of our Catoni-Giulini confidence sphere sequence
 def CGradius(t, alpha, trSigma, sumlambda, sumlambdasq, beta=1):
     return (sqrt(trSigma)*(2*exp(2/beta + 2)+1)*sumlambdasq + beta/2 + log(1/alpha))/sumlambda
+    return (trSigma*(2*exp(2/beta + 2)+1)*sumlambdasq + beta/2 + log(1/alpha))/sumlambda
 
 
 
@@ -27,7 +28,7 @@ alpha = 0.05
 
 momradii = [ ]
 CGradii = [ ]
-
+ 
 sumlambda = sumlambdasq = 0
 
 d = 20
@@ -36,7 +37,7 @@ end = 10000
 for t in range(1,end+1):
     sumlambda += sqrt( log(1/alpha)/(sqrt(d)*t*log(t+10)*4) )
     sumlambdasq += log(1/alpha)/(sqrt(d)*t*log(t+10)*4)
-    momradii.append(momradius(t, alpha/(t+t*t), d))
+    momradii.append(momradius(t, alpha/(2*t*t), d))
     CGradii.append(CGradius(t, alpha, d, sumlambda, sumlambdasq, beta=4))
 
 start = 150
